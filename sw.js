@@ -3,7 +3,7 @@
    Your songs are NOT stored here. They live in IndexedDB (see app.js).
    Paths are relative, so this works at https://<username>.github.io/SPIDERMAN/ */
 
-const CACHE = 'rishi-music-v2';   // change this number whenever you update your files
+const CACHE = 'rishi-music-v6';   // change this number whenever you update your files
 
 const APP_SHELL = [
   './',
@@ -18,7 +18,7 @@ const APP_SHELL = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE)
-      .then(cache => cache.addAll(APP_SHELL))
+      .then(cache => Promise.all(APP_SHELL.map(f => cache.add(f).catch(() => {}))))   // one missing file must not break the worker
       .then(() => self.skipWaiting())
   );
 });
@@ -37,6 +37,7 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.includes('/songs/') || req.headers.has('range')) return;   // audio is stored by the app, not cached here
 
   // Page loads: try network first, fall back to cached page when offline
   if (req.mode === 'navigate') {
