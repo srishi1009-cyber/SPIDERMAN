@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070912">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Rishi Music</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-idle is-paused">
+
+  <header class="top">
+    <h1 class="logo">&#9835; RISHI MUSIC</h1>
+    <p class="tagline">Personal Audio Station</p>
+    <button id="importBtn" class="btn-import">+ Import Track</button>
+
+    <label class="field-label" for="directorSelect">Playlist / Artist</label>
+    <div class="select-wrap">
+      <select id="directorSelect">
+        <option value="__all">ALL DIRECTORS</option>
+      </select>
+    </div>
+  </header>
+
+  <main>
+    <div class="list-head">
+      <h2 id="listTitle">All Songs</h2>
+      <input id="searchInput" type="search" placeholder="Search song name..." autocomplete="off">
+    </div>
+
+    <div class="list-actions">
+      <button id="playAllBtn" class="btn-shuffle">&#128256; Shuffle play</button>
+      <button id="resetBtn" class="btn-ghost" hidden>&#8634; Reset today</button>
+    </div>
+    <p id="countLabel" class="count"></p>
+
+    <ul id="songList" class="song-list"></ul>
+    <p id="emptyMsg" class="empty" hidden>No songs yet. Tap <b>+ Import Track</b> to add your downloaded songs.</p>
+  </main>
+
+  <!-- Player -->
+  <footer class="player">
+    <div class="now">
+      <div class="disc"><span>&#9835;</span></div>
+      <div class="now-text">
+        <div id="nowTitle" class="now-title">No track playing</div>
+        <div id="nowSub" class="now-sub">Select a song from your library</div>
+      </div>
+    </div>
+    <div class="seek-row">
+      <span id="curTime">0:00</span>
+      <input id="seek" type="range" min="0" max="100" value="0" step="0.1">
+      <span id="durTime">0:00</span>
+    </div>
+    <div class="controls">
+      <button id="prevBtn" class="ctl small" aria-label="Previous">&#9198;&#xFE0E;</button>
+      <button id="playBtn" class="ctl big" aria-label="Play or pause">&#9654;</button>
+      <button id="nextBtn" class="ctl small" aria-label="Next random song">&#9197;&#xFE0E;</button>
+    </div>
+  </footer>
+
+  <!-- Import dialog -->
+  <div id="importModal" class="modal" hidden>
+    <div class="modal-card">
+      <h3>Import tracks</h3>
+      <label for="importDirector">Music director (optional)</label>
+      <input id="importDirector" list="directorList" placeholder="e.g. Anirudh, A. R. Rahman" autocomplete="off">
+      <datalist id="directorList"></datalist>
+      <p class="hint">This director is applied to every song you pick now. You can change it later with Edit.</p>
+      <input id="fileInput" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.flac,.opus" multiple hidden>
+      <p id="importStatus" class="status" hidden></p>
+      <div class="modal-actions">
+        <button id="importCancel" class="btn-ghost">Cancel</button>
+        <button id="importChoose" class="btn-primary">Choose songs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit dialog -->
+  <div id="editModal" class="modal" hidden>
+    <div class="modal-card">
+      <h3>Edit song</h3>
+      <label for="editTitle">Song name</label>
+      <input id="editTitle" autocomplete="off">
+      <label for="editDirector">Music director</label>
+      <input id="editDirector" list="directorList" autocomplete="off">
+      <div class="modal-actions">
+        <button id="editCancel" class="btn-ghost">Cancel</button>
+        <button id="editSave" class="btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
